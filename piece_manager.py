@@ -2,8 +2,11 @@ import random
 from turtle import Turtle
 import game_board
 
+WIDTH = 10
+HEIGHT = 20
+
 PIECES = ["O", "I", "S", "Z", "L", "J", "T"]
-O = [(-1, 0), (-1, -1), (0, 0), (0,-1)]
+O = [(-1, 0), (-1, -1), (0, 0), (0, -1)]
 I = [(-1, 0), (0, 0), (1, 0), (2, 0)]
 S = [(0, 0), (1, 0), (-1, -1), (0, -1)]
 Z = [(-1, 0), (0, 0), (0, -1), (1, -1)]
@@ -25,12 +28,20 @@ QUEUE_ORIGINS = [(215, 285), (215, 195), (215, 105)]
 
 
 class PieceManager:
-    def __init__(self):
-        self.board = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
+    def __init__(self, square_size):
+        self.square_size = square_size
+
+        self.board = None
+        self.initialize_board()
 
         self.active_piece = None
         self.queue = []
-        self.hold_piece = []
+        self.hold_piece = None
+
+        self.left_wall = -WIDTH / 2 * self.square_size
+        self.right_wall = WIDTH / 2 * self.square_size
+        self.top_wall = HEIGHT / 2 * self.square_size
+        self.bottom_wall = -HEIGHT / 2 * self.square_size
 
         for index in range(0, 3):
             self.queue_new()
@@ -40,6 +51,15 @@ class PieceManager:
         self.draw_queue()
 
         self.active_piece.draw_piece(ORIGIN)
+
+    # initialize 20x10 array of None
+    def initialize_board(self):
+        self.board = []
+        for row_index in range(0, 20):
+            row = []
+            for col_index in range(0, 10):
+                row.append(None)
+            self.board.append(row)
 
     # def swap_hold_piece(self):
     #     if self.hold_piece is None:
@@ -53,7 +73,6 @@ class PieceManager:
     #         temp = self.active_piece
     #         self.active_piece = self.hold_piece
     #         self.hold_piece = temp
-    #         # TODO: put active piece at top
     #
     def queue_new(self):
         # pick random new piece
@@ -72,37 +91,51 @@ class PieceManager:
         self.queue_new()
 
     #
-    # def move_left(self, left_wall):
-    #     for square in self.active_piece.squares:
-    #         pass
-    #         # if cant move left:
-    #         #     return
-    #     for square in self.active_piece.squares:
-    #         x = square.xcor()
-    #         y = square.ycor()
-    #         square.goto(x - 20, y)
-    #
-    # def move_right(self):
-    #     for square in self.active_piece.squares:
-    #         pass
-    #     # if cant move right:
-    #     #     return
-    #     for square in self.active_piece.squares:
-    #         x = square.xcor()
-    #         y = square.ycor()
-    #         square.goto(x + 20, y)
-    #
-    def move_down(self, event=None):
-        for square in self.active_piece.turtles:
-            pass
-            # check if cant move down
-        # if cant move down:
-        #     return False
-        for square in self.active_piece.turtles:
-            x = square.xcor()
-            y = square.ycor()
-            square.goto(x, y - 30)
+    def move_left(self, event):
+        # Check if piece can move left
+        for turt in self.active_piece.turtles:
+            x = turt.xcor()
+            if x - self.square_size < self.left_wall:
+                return
+            # elif square is occupied by piece already on board
+
+        # Move piece left
+        for turt in self.active_piece.turtles:
+            x = turt.xcor()
+            y = turt.ycor()
+            turt.goto(x - self.square_size, y)
+
+    def move_right(self, event):
+        # Check if piece can move right
+        for turt in self.active_piece.turtles:
+            x = turt.xcor()
+            if x + self.square_size > self.right_wall:
+                return
+            # elif square is occupied by piece already on board
+
+        # Move piece right
+        for turt in self.active_piece.turtles:
+            x = turt.xcor()
+            y = turt.ycor()
+            turt.goto(x + self.square_size, y)
+
+    def move_down(self):
+        for turt in self.active_piece.turtles:
+            y = turt.ycor()
+            if y - self.square_size < self.bottom_wall:
+                return False
+            # elif square is occupied by piece already on board
+        for turt in self.active_piece.turtles:
+            x = turt.xcor()
+            y = turt.ycor()
+            turt.goto(x, y - self.square_size)
         return True
+
+    def check_lines(self):
+        return 0
+
+    def is_full(self):
+        return False
 
 
 def new_turtle(color):
