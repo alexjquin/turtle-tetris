@@ -1,36 +1,18 @@
 import random
-from turtle import Turtle
-import game_board
+from tetronimo import Tetronimo
 
 WIDTH = 10
 HEIGHT = 20
 
-PIECES = ["O", "I", "S", "Z", "L", "J", "T"]
-O = [(-1, 0), (-1, -1), (0, 0), (0, -1)]
-I = [(-1, 0), (0, 0), (1, 0), (2, 0)]
-S = [(0, 0), (1, 0), (-1, -1), (0, -1)]
-Z = [(-1, 0), (0, 0), (0, -1), (1, -1)]
-L = [(-1, -1), (0, -1), (1, -1), (1, 0)]
-J = [(-1, 0), (-1, -1), (0, -1), (1, -1)]
-T = [(-1, -1), (0, 0), (0, -1), (1, -1)]
-
-O_COLOR = "#edf200"
-I_COLOR = "#00d8f2"
-S_COLOR = "#ea0000"
-Z_COLOR = "#64ad23"
-L_COLOR = "#f28600"
-J_COLOR = "#f24db2"
-T_COLOR = "#97008e"
-
-ORIGIN = (15, 285)
-
 QUEUE_ORIGINS = [(215, 285), (215, 195), (215, 105)]
-
+ORIGIN_COORDINATES = (15, 285)
+ORIGIN_INDEX = (5, 19)
 
 class PieceManager:
     def __init__(self, square_size):
         self.square_size = square_size
 
+        # 10 x 20 array of None to begin
         self.board = None
         self.initialize_board()
 
@@ -50,7 +32,7 @@ class PieceManager:
 
         self.draw_queue()
 
-        self.active_piece.draw_piece(ORIGIN)
+        self.active_piece.draw_piece(ORIGIN_COORDINATES, ORIGIN_INDEX)
 
     # initialize 20x10 array of None
     def initialize_board(self):
@@ -77,8 +59,7 @@ class PieceManager:
     def queue_new(self):
         # pick random new piece
         # add to end of queue
-        new_shape = random.choice(PIECES)
-        new_piece = Piece(new_shape)
+        new_piece = Tetronimo()
         self.queue.append(new_piece)
 
     def draw_queue(self):
@@ -94,94 +75,48 @@ class PieceManager:
     def move_left(self, event):
         # Check if piece can move left
         for turt in self.active_piece.turtles:
-            x = turt.xcor()
-            if x - self.square_size < self.left_wall:
+            if turt.x_index == 0 or self.board[turt.y_index][turt.x_index - 1] is not None:
                 return
             # elif square is occupied by piece already on board
 
         # Move piece left
         for turt in self.active_piece.turtles:
-            x = turt.xcor()
-            y = turt.ycor()
-            turt.goto(x - self.square_size, y)
+            turt.goto(turt.xcor() - self.square_size, turt.ycor())
+            turt.x_index -= 1
 
     def move_right(self, event):
         # Check if piece can move right
         for turt in self.active_piece.turtles:
-            x = turt.xcor()
-            if x + self.square_size > self.right_wall:
+            if turt.x_index == 9 or self.board[turt.y_index][turt.x_index + 1] is not None:
                 return
             # elif square is occupied by piece already on board
 
         # Move piece right
         for turt in self.active_piece.turtles:
-            x = turt.xcor()
-            y = turt.ycor()
-            turt.goto(x + self.square_size, y)
+            turt.goto(turt.xcor() + self.square_size, turt.ycor())
+            turt.x_index += 1
 
     def move_down(self):
         for turt in self.active_piece.turtles:
-            y = turt.ycor()
-            if y - self.square_size < self.bottom_wall:
+            if turt.y_index == 0 or self.board[turt.y_index - 1][turt.x_index] is not None:
                 return False
             # elif square is occupied by piece already on board
         for turt in self.active_piece.turtles:
-            x = turt.xcor()
-            y = turt.ycor()
-            turt.goto(x, y - self.square_size)
+            turt.goto(turt.xcor(), turt.ycor() - self.square_size)
+            turt.y_index -= 1
         return True
 
     def check_lines(self):
         return 0
 
     def is_full(self):
+        for space in self.board[0]:
+            if space is not None:
+                return True
+
         return False
 
-
-def new_turtle(color):
-    tim = Turtle()
-    tim.shape("turtle")
-    tim.color("black", color)
-    tim.penup()
-    tim.setheading(270)
-    tim.shapesize(1.4)
-
-    return tim
-
-
-class Piece:
-    def __init__(self, new_shape):
-        self.turtles = []
-
-        if new_shape == "O":
-            self.make_piece(O_COLOR)
-            self.shape = O
-        elif new_shape == "I":
-            self.make_piece(I_COLOR)
-            self.shape = I
-        elif new_shape == "S":
-            self.make_piece(S_COLOR)
-            self.shape = S
-        elif new_shape == "Z":
-            self.make_piece(Z_COLOR)
-            self.shape = Z
-        elif new_shape == "L":
-            self.make_piece(L_COLOR)
-            self.shape = L
-        elif new_shape == "J":
-            self.make_piece(J_COLOR)
-            self.shape = J
-        elif new_shape == "T":
-            self.make_piece(T_COLOR)
-            self.shape = T
-
-    def make_piece(self, color: str):
-        for index in range(0, 4):
-            tim = new_turtle(color)
-            self.turtles.append(tim)
-
-    def draw_piece(self, origin):
-        for index, coordinates in enumerate(self.shape):
-            self.turtles[index].goto(coordinates[0] * 30 + origin[0], coordinates[1] * 30 + origin[1])
-
     # rotate around square[1]
+    def finish_active(self):
+        for turt in self.active_piece.turtles:
+            self.board[turt.y_index][turt.x_index] = turt
