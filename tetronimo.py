@@ -21,17 +21,6 @@ J = [(-1, 0), (-1, -1), (0, -1), (1, -1)]
 T = [(-1, -1), (0, 0), (0, -1), (1, -1)]
 
 
-def new_turtle(color):
-    tim = Turtle()
-    tim.shape("turtle")
-    tim.color("black", color)
-    tim.penup()
-    tim.setheading(270)
-    tim.shapesize(1.5)
-
-    return tim
-
-
 class Tetronimo:
     def __init__(self):
         new_shape = random.choice(PIECES)
@@ -65,14 +54,27 @@ class Tetronimo:
 
     def make_shape(self, color: str):
         for index in range(0, 4):
-            tim = new_turtle(color)
-            self.turtles.append(tim)
+            self.turtles.append(TetronimoTurtle(color))
 
     def draw_piece(self, initial_coordinates, initial_index=None):
         for index, coordinates in enumerate(self.shape):
-            self.turtles[index].goto(coordinates[0] * 30 + initial_coordinates[0],
-                                     coordinates[1] * 30 + initial_coordinates[1])
+            turt = self.turtles[index]
+            turt.goto(coordinates[0] * 30 + initial_coordinates[0],
+                      coordinates[1] * 30 + initial_coordinates[1])
 
             if initial_index is not None:
-                self.x_index = coordinates[0] + initial_index[0]
-                self.y_index = coordinates[1] + initial_index[1]
+                turt.x_index = coordinates[0] + initial_index[0]
+                turt.y_index = coordinates[1] + initial_index[1]
+
+class TetronimoTurtle(Turtle):
+    def __init__(self, color):
+        super().__init__()
+
+        self.shape("turtle")
+        self.color("black", color)
+        self.penup()
+        self.setheading(270)
+        self.shapesize(1.5)
+
+        self.x_index = -1
+        self.y_index = -1
