@@ -8,6 +8,7 @@ QUEUE_ORIGINS = [(215, 285), (215, 195), (215, 105)]
 ORIGIN_COORDINATES = (15, 285)
 ORIGIN_INDEX = (5, 19)
 
+
 class PieceManager:
     def __init__(self, square_size):
         self.square_size = square_size
@@ -62,6 +63,8 @@ class PieceManager:
         new_piece = Tetronimo()
         self.queue.append(new_piece)
 
+        self.draw_queue()
+
     def draw_queue(self):
         for index, piece in enumerate(self.queue):
             piece.draw_piece(QUEUE_ORIGINS[index])
@@ -70,6 +73,8 @@ class PieceManager:
         self.active_piece = self.queue[0]
         self.queue.remove(self.active_piece)
         self.queue_new()
+
+        self.active_piece.draw_piece(ORIGIN_COORDINATES, ORIGIN_INDEX)
 
     #
     def move_left(self, event):
@@ -110,7 +115,7 @@ class PieceManager:
         return 0
 
     def is_full(self):
-        for space in self.board[0]:
+        for space in self.board[19]:
             if space is not None:
                 return True
 
