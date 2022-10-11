@@ -3,18 +3,21 @@ import time
 import turtle
 from turtle import Screen
 
-import tkinter as tk
-
 from game_board import GameBoard
 from piece_manager import PieceManager
 from scoreboard import Scoreboard
 
 
 def move_down_event(event=None):
+    piece_manager.move_down()
+
+def move_down_on_timer():
     global delay
     global game_is_on
 
     if not piece_manager.move_down():
+        piece_manager.finish_active()
+
         if piece_manager.is_full():
             game_is_on = False
         else:
@@ -25,7 +28,8 @@ def move_down_event(event=None):
             if scoreboard.lines > 0 and scoreboard.lines % 10:
                 scoreboard.level_up()
                 delay *= 0.9
-    turtle.ontimer(move_down_event, t=delay * 1000)
+
+    turtle.ontimer(move_down_on_timer, t=delay * 1000)
 
 
 SCREEN_WIDTH = 700
@@ -59,10 +63,10 @@ game_is_on = True
 global delay
 delay = 1
 
-turtle.ontimer(move_down_event, t=delay * 1000)
+turtle.ontimer(move_down_on_timer, t=delay * 1000)
 
 while game_is_on:
     screen.update()
 
-# scoreboard.game_over()
+scoreboard.game_over()
 screen.mainloop()
