@@ -10,8 +10,8 @@ class GameBoard:
 
         self.wall_turtle = Turtle()
         self.wall_turtle.hideturtle()
-        self.wall_turtle.color("black")
-        self.wall_turtle.pensize(5)
+        self.wall_turtle.color("#29929e")
+        self.wall_turtle.pensize(3)
 
         self.draw_outer_wall()
 
