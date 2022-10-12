@@ -1,5 +1,3 @@
-import threading
-import time
 import turtle
 from turtle import Screen
 
@@ -61,6 +59,7 @@ canvas.bind("<Left>", piece_manager.move_left)
 canvas.bind("<Down>", piece_manager.move_down)
 canvas.bind("<Right>", piece_manager.move_right)
 canvas.bind("<Control_L>", swap_piece_event)
+canvas.bind("<Up>", piece_manager.rotate_right)
 
 screen.update()
 
