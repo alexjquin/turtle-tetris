@@ -1,5 +1,5 @@
-import rotations
 from tetronimo import Tetronimo
+from operator import add, sub
 
 WIDTH = 10
 HEIGHT = 20
@@ -130,65 +130,141 @@ class PieceManager:
             self.board[turt.y_index][turt.x_index] = turt
 
     def rotate_right(self, event=None):
-        if self.active_piece.shape_name == "O":
-            return
-        elif self.active_piece.shape_name == "I":
-            rotations.rotate_i_right(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "S":
-            rotations.rotate_s_right(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "Z":
-            rotations.rotate_z_right(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "L":
-            rotations.rotate_l_right(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "J":
-            rotations.rotate_j_right(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "T":
-            rotations.rotate_t_right(self.active_piece, self.board, self.square_size)
+        if self.active_piece.rotation == 1:
+            if self.active_piece.shape_name == "I":
+                self.rotation(add, add, sub, sub, sub, sub, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(sub, sub, sub, add, add, add, 0, 2)
 
-    def rotate_left(self, event=None):
-        if self.active_piece.shape_name == "O":
-            return
-        elif self.active_piece.shape_name == "I":
-            rotations.rotate_i_left(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "S":
-            rotations.rotate_s_left(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "Z":
-            rotations.rotate_z_left(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "L":
-            rotations.rotate_l_left(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "J":
-            rotations.rotate_j_left(self.active_piece, self.board, self.square_size)
-        elif self.active_piece.shape_name == "T":
-            rotations.rotate_t_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.rotation == 2:
+            if self.active_piece.shape_name == "I":
+                self.rotation(add, sub, sub, add, sub, add, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(sub, add, add, add, add, add, 2, 0)
 
-    def rotate_s_right(active_piece, board, square_size):
-        turt_0 = active_piece.turtles[0]
+        elif self.active_piece.rotation == 3:
+            if self.active_piece.shape_name == "I":
+                self.rotation(sub, sub, add, add, add, add, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(add, add, add, sub, sub, sub, 0, 2)
+
+        elif self.active_piece.rotation == 4:
+            if self.active_piece.shape_name == "I":
+                self.rotation(sub, add, add, sub, add, sub, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(add, sub, sub, sub, sub, sub, 2, 0)
+
+        self.active_piece.rotate_right()
+
+    def rotate_left(self):
+        if self.active_piece.rotation == 1:
+            if self.active_piece.shape_name == "I":
+                self.rotation(add, sub, sub, add, sub, add, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(sub, add, add, add, add, add, 2, 0)
+            elif self.active_piece.shape_name == "Z":
+                pass
+            elif self.active_piece.shape_name == "L":
+                pass
+            elif self.active_piece.shape_name == "J":
+                pass
+            elif self.active_piece.shape_name == "T":
+                pass
+
+        if self.active_piece.rotation == 2:
+            if self.active_piece.shape_name == "I":
+                self.rotation(add, add, sub, sub, sub, sub, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(add, add, add, sub, sub, sub, 0, 2)
+            elif self.active_piece.shape_name == "Z":
+                pass
+            elif self.active_piece.shape_name == "L":
+                pass
+            elif self.active_piece.shape_name == "J":
+                pass
+            elif self.active_piece.shape_name == "T":
+                pass
+
+        elif self.active_piece.rotation == 3:
+            if self.active_piece.shape_name == "I":
+                self.rotation(sub, add, add, sub, add, sub, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(add, sub, sub, sub, sub, sub, 2, 0)
+            elif self.active_piece.shape_name == "Z":
+                pass
+            elif self.active_piece.shape_name == "L":
+                pass
+            elif self.active_piece.shape_name == "J":
+                pass
+            elif self.active_piece.shape_name == "T":
+                pass
+
+        elif self.active_piece.rotation == 4:
+            if self.active_piece.shape_name == "I":
+                self.rotation(sub, sub, add, add, add, add, 2, 2)
+            elif self.active_piece.shape_name == "S":
+                self.rotation(sub, sub, sub, add, add, add, 0, 2)
+            elif self.active_piece.shape_name == "Z":
+                pass
+            elif self.active_piece.shape_name == "L":
+                pass
+            elif self.active_piece.shape_name == "J":
+                pass
+            elif self.active_piece.shape_name == "T":
+                pass
+
+        self.active_piece.rotate_left()
+
+    def rotation(self, x_0_op, y_0_op, x_2_op, y_2_op, x_3_op, y_3_op, x_3_mod,
+                 y_3_mod):
+        turt_0 = self.active_piece.turtles[0]
         # turtles[1] is rotation center and doesnt move
-        turt_2 = active_piece.turtles[2]
-        turt_3 = active_piece.turtles[3]
+        turt_2 = self.active_piece.turtles[2]
+        turt_3 = self.active_piece.turtles[3]
 
-        if active_piece.rotation == 1:
-            s_rotation_1_to_4(turt_0, turt_2, turt_3, board, square_size)
+        turt_0_x = turt_0.x_index
+        turt_0_y = turt_0.y_index
 
-        elif active_piece.rotation == 2:
-            s_rotation_4_to_3(turt_0, turt_2, turt_3, board, square_size)
+        # turtles[1] is rotation center and doesnt move
 
-        elif active_piece.rotation == 3:
-            s_rotation_3_to_2(turt_0, turt_2, turt_3, board, square_size)
+        turt_2_x = turt_2.x_index
+        turt_2_y = turt_2.y_index
 
-        elif active_piece.rotation == 4:
-            s_rotation_2_to_1(turt_0, turt_2, turt_3, board, square_size)
+        turt_3_x = turt_3.x_index
+        turt_3_y = turt_3.y_index
 
-        active_piece.rotate_right()
+        turt_0_new_x = x_0_op(turt_0_x, 1)
+        turt_0_new_y = y_0_op(turt_0_y, 1)
+        if not self.is_valid_rotation(turt_0_new_x, turt_0_new_y):
+            return
 
-    def rotate_z_right(self):
-        pass
+        turt_2_new_x = x_2_op(turt_2_x, 1)
+        turt_2_new_y = y_2_op(turt_2_y, 1)
+        if not self.is_valid_rotation(turt_2_new_x, turt_2_new_y):
+            return
 
-    def rotate_l_right(self):
-        pass
+        turt_3_new_x = x_3_op(turt_3_x, x_3_mod)
+        turt_3_new_y = y_3_op(turt_3_y, y_3_mod)
+        if not self.is_valid_rotation(turt_3_new_x, turt_3_new_y):
+            return
 
-    def rotate_j_right(self):
-        pass
+        turt_0.x_index = turt_0_new_x
+        turt_0.y_index = turt_0_new_y
+        turt_0.goto(x_0_op(turt_0.xcor(), self.square_size), y_0_op(turt_0.ycor(), self.square_size))
 
-    def rotate_t_right(self):
-        pass
+        turt_2.x_index = turt_2_new_x
+        turt_2.y_index = turt_2_new_y
+        turt_2.goto(x_2_op(turt_2.xcor(), self.square_size), y_2_op(turt_2.ycor(), self.square_size))
+
+        turt_3.x_index = turt_3_new_x
+        turt_3.y_index = turt_3_new_y
+        turt_3.goto(x_3_op(turt_3.xcor(), x_3_mod * self.square_size), y_3_op(turt_3.ycor(), y_3_mod * self.square_size))
+
+    def is_valid_rotation(self, x, y):
+        return not out_of_bounds(x, y) and self.board[y][x] is None
+
+
+def out_of_bounds(x, y):
+    return x < 0 or x > 9 or y < 0 or y > 19
+
+
