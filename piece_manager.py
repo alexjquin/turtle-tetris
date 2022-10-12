@@ -1,4 +1,4 @@
-import random
+import rotations
 from tetronimo import Tetronimo
 
 WIDTH = 10
@@ -128,3 +128,67 @@ class PieceManager:
     def finish_active(self):
         for turt in self.active_piece.turtles:
             self.board[turt.y_index][turt.x_index] = turt
+
+    def rotate_right(self, event=None):
+        if self.active_piece.shape_name == "O":
+            return
+        elif self.active_piece.shape_name == "I":
+            rotations.rotate_i_right(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "S":
+            rotations.rotate_s_right(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "Z":
+            rotations.rotate_z_right(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "L":
+            rotations.rotate_l_right(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "J":
+            rotations.rotate_j_right(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "T":
+            rotations.rotate_t_right(self.active_piece, self.board, self.square_size)
+
+    def rotate_left(self, event=None):
+        if self.active_piece.shape_name == "O":
+            return
+        elif self.active_piece.shape_name == "I":
+            rotations.rotate_i_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "S":
+            rotations.rotate_s_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "Z":
+            rotations.rotate_z_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "L":
+            rotations.rotate_l_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "J":
+            rotations.rotate_j_left(self.active_piece, self.board, self.square_size)
+        elif self.active_piece.shape_name == "T":
+            rotations.rotate_t_left(self.active_piece, self.board, self.square_size)
+
+    def rotate_s_right(active_piece, board, square_size):
+        turt_0 = active_piece.turtles[0]
+        # turtles[1] is rotation center and doesnt move
+        turt_2 = active_piece.turtles[2]
+        turt_3 = active_piece.turtles[3]
+
+        if active_piece.rotation == 1:
+            s_rotation_1_to_4(turt_0, turt_2, turt_3, board, square_size)
+
+        elif active_piece.rotation == 2:
+            s_rotation_4_to_3(turt_0, turt_2, turt_3, board, square_size)
+
+        elif active_piece.rotation == 3:
+            s_rotation_3_to_2(turt_0, turt_2, turt_3, board, square_size)
+
+        elif active_piece.rotation == 4:
+            s_rotation_2_to_1(turt_0, turt_2, turt_3, board, square_size)
+
+        active_piece.rotate_right()
+
+    def rotate_z_right(self):
+        pass
+
+    def rotate_l_right(self):
+        pass
+
+    def rotate_j_right(self):
+        pass
+
+    def rotate_t_right(self):
+        pass
