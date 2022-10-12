@@ -104,7 +104,7 @@ class PieceManager:
             turt.goto(turt.xcor() + self.square_size, turt.ycor())
             turt.x_index += 1
 
-    def move_down(self):
+    def move_down(self, event=None):
         for turt in self.active_piece.turtles:
             if turt.y_index == 0 or self.board[turt.y_index - 1][turt.x_index] is not None:
                 return False
