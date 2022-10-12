@@ -25,9 +25,6 @@ class Tetronimo:
     def __init__(self):
         new_shape = random.choice(PIECES)
 
-        self.x_index = -1
-        self.y_index = -1
-
         self.turtles = []
 
         if new_shape == "O":
