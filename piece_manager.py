@@ -8,6 +8,8 @@ QUEUE_ORIGINS = [(215, 285), (215, 195), (215, 105)]
 ORIGIN_COORDINATES = (15, 285)
 ORIGIN_INDEX = (5, 19)
 
+HOLD_COORDINATES = (-215, 285)
+
 
 class PieceManager:
     def __init__(self, square_size):
@@ -44,19 +46,20 @@ class PieceManager:
                 row.append(None)
             self.board.append(row)
 
-    # def swap_hold_piece(self):
-    #     if self.hold_piece is None:
-    #         self.hold_piece = self.active_piece
-    #         self.active_piece = self.queue[0]
-    #
-    #         self.queue.remove(self.active_piece)
-    #
-    #         self.queue_new()
-    #     else:
-    #         temp = self.active_piece
-    #         self.active_piece = self.hold_piece
-    #         self.hold_piece = temp
-    #
+    def swap_hold_piece(self, event=None):
+        if self.hold_piece is None:
+            self.hold_piece = self.active_piece
+            self.hold_piece.draw_piece(HOLD_COORDINATES)
+
+            self.next_piece()
+        else:
+            temp = self.active_piece
+            self.active_piece = self.hold_piece
+            self.hold_piece = temp
+
+            self.hold_piece.draw_piece(HOLD_COORDINATES)
+            self.active_piece.draw_piece(ORIGIN_COORDINATES, ORIGIN_INDEX)
+
     def queue_new(self):
         # pick random new piece
         # add to end of queue

@@ -8,15 +8,14 @@ from piece_manager import PieceManager
 from scoreboard import Scoreboard
 
 
-def move_down_event(event=None):
-    piece_manager.move_down()
-
 def move_down_on_timer():
     global delay
     global game_is_on
+    global swapped
 
     if not piece_manager.move_down():
         piece_manager.finish_active()
+        swapped = False
 
         if piece_manager.is_full():
             game_is_on = False
@@ -30,6 +29,14 @@ def move_down_on_timer():
                 delay *= 0.9
 
     turtle.ontimer(move_down_on_timer, t=delay * 1000)
+
+
+def swap_piece_event(event=None):
+    global swapped
+
+    if not swapped:
+        piece_manager.swap_hold_piece()
+        swapped = True
 
 
 SCREEN_WIDTH = 700
@@ -51,9 +58,9 @@ scoreboard = Scoreboard()
 
 canvas = turtle.getcanvas()
 canvas.bind("<Left>", piece_manager.move_left)
-canvas.bind("<Down>", move_down_event)
+canvas.bind("<Down>", piece_manager.move_down)
 canvas.bind("<Right>", piece_manager.move_right)
-# canvas.bind("<Control_L>", piece_manager.swap_hold_piece)
+canvas.bind("<Control_L>", swap_piece_event)
 
 screen.update()
 
@@ -62,6 +69,9 @@ game_is_on = True
 
 global delay
 delay = 1
+
+global swapped
+swapped = False
 
 turtle.ontimer(move_down_on_timer, t=delay * 1000)
 
