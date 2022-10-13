@@ -319,13 +319,14 @@ class PieceManager:
     def rotation(self, x_0_op, y_0_op, x_2_op, y_2_op, x_3_op, y_3_op, x_3_mod,
                  y_3_mod):
         turt_0 = self.active_piece.turtles[0]
-        # turtles[1] is rotation center and doesnt move
+        turt_1 = self.active_piece.turtles[1]
         turt_2 = self.active_piece.turtles[2]
         turt_3 = self.active_piece.turtles[3]
 
         turt_0_x = turt_0.x_index
         turt_0_y = turt_0.y_index
-        # turtles[1] is rotation center and doesnt move
+        turt_1_x = turt_1.x_index
+        turt_1_y = turt_1.y_index
         turt_2_x = turt_2.x_index
         turt_2_y = turt_2.y_index
         turt_3_x = turt_3.x_index
@@ -337,26 +338,97 @@ class PieceManager:
         turt_2_new_y = y_2_op(turt_2_y, 1)
         turt_3_new_x = x_3_op(turt_3_x, x_3_mod)
         turt_3_new_y = y_3_op(turt_3_y, y_3_mod)
+
         if not self.is_valid_rotation(turt_0_new_x, turt_0_new_y) or \
                 not self.is_valid_rotation(turt_2_new_x, turt_2_new_y) or \
                 not self.is_valid_rotation(turt_3_new_x, turt_3_new_y):
-            #TODO: Try shifting up, left, right, or down to make rotation work
+            # shift up 1
+            if self.is_valid_rotation(turt_0_new_x, turt_0_new_y + 1) and \
+                    self.is_valid_rotation(turt_1_x, turt_1_y + 1) and \
+                    self.is_valid_rotation(turt_2_new_x, turt_2_new_y + 1) and \
+                    self.is_valid_rotation(turt_3_new_x, turt_3_new_y + 1):
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                      turt_2_new_y,
+                                      turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                      y_2_op, y_3_mod, y_3_op, 0, 1)
+                return True
+
+            # shift up 2
+            elif self.is_valid_rotation(turt_0_new_x, turt_0_new_y + 2) and \
+                    self.is_valid_rotation(turt_1_x, turt_1_y + 2) and \
+                    self.is_valid_rotation(turt_2_new_x, turt_2_new_y + 2) and \
+                    self.is_valid_rotation(turt_3_new_x, turt_3_new_y + 2):
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                      turt_2_new_y,
+                                      turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                      y_2_op, y_3_mod, y_3_op, 0, 2)
+                return True
+
+            # shift right 1
+            elif self.is_valid_rotation(turt_0_new_x + 1, turt_0_new_y) and \
+                    self.is_valid_rotation(turt_1_x + 1, turt_1_y) and \
+                    self.is_valid_rotation(turt_2_new_x + 1, turt_2_new_y) and \
+                    self.is_valid_rotation(turt_3_new_x + 1, turt_3_new_y):
+
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                      turt_2_new_y,
+                                      turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                      y_2_op, y_3_mod, y_3_op, 1, 0)
+                return True
+
+            # shift left 1
+            elif self.is_valid_rotation(turt_0_new_x - 1, turt_0_new_y) and \
+                    self.is_valid_rotation(turt_1_x - 1, turt_1_y) and \
+                    self.is_valid_rotation(turt_2_new_x - 1, turt_2_new_y) and \
+                    self.is_valid_rotation(turt_3_new_x - 1, turt_3_new_y):
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                      turt_2_new_y,
+                                      turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                      y_2_op, y_3_mod, y_3_op, -1, 0)
+                return True
+
+            # shift down 1
+            elif self.is_valid_rotation(turt_0_new_x, turt_0_new_y - 1) and \
+                    self.is_valid_rotation(turt_1_x, turt_1_y - 1) and \
+                    self.is_valid_rotation(turt_2_new_x, turt_2_new_y - 1) and \
+                    self.is_valid_rotation(turt_3_new_x, turt_3_new_y - 1):
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                      turt_2_new_y,
+                                      turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                      y_2_op, y_3_mod, y_3_op, 0, -1)
+                return True
+
             return False
 
-        turt_0.x_index = turt_0_new_x
-        turt_0.y_index = turt_0_new_y
-        turt_0.goto(x_0_op(turt_0.xcor(), self.square_size), y_0_op(turt_0.ycor(), self.square_size))
+        else:
+            self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
+                                  turt_2_new_y,
+                                  turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
+                                  y_2_op, y_3_mod, y_3_op, 0, 0)
 
-        turt_2.x_index = turt_2_new_x
-        turt_2.y_index = turt_2_new_y
-        turt_2.goto(x_2_op(turt_2.xcor(), self.square_size), y_2_op(turt_2.ycor(), self.square_size))
+            return True
 
-        turt_3.x_index = turt_3_new_x
-        turt_3.y_index = turt_3_new_y
-        turt_3.goto(x_3_op(turt_3.xcor(), x_3_mod * self.square_size),
-                    y_3_op(turt_3.ycor(), y_3_mod * self.square_size))
+    def shift_and_rotate(self, turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
+                         turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op, y_2_op,
+                         y_3_mod, y_3_op, x_shift, y_shift):
+        turt_0.x_index = turt_0_new_x + x_shift
+        turt_0.y_index = turt_0_new_y + y_shift
+        turt_0.goto(x_0_op(turt_0.xcor(), self.square_size) + x_shift * self.square_size,
+                    y_0_op(turt_0.ycor(), self.square_size) + y_shift * self.square_size)
 
-        return True
+        turt_1.x_index += x_shift
+        turt_1.y_index += y_shift
+        turt_1.goto(turt_1.xcor() + x_shift * self.square_size, turt_1.ycor() + y_shift * self.square_size)
+
+        turt_2.x_index = turt_2_new_x + x_shift
+        turt_2.y_index = turt_2_new_y + y_shift
+        turt_2.goto(x_2_op(turt_2.xcor(), self.square_size) + x_shift * self.square_size,
+                    y_2_op(turt_2.ycor(), self.square_size) + y_shift * self.square_size)
+
+        turt_3.x_index = turt_3_new_x + x_shift
+        turt_3.y_index = turt_3_new_y + y_shift
+        turt_3.goto(x_3_op(turt_3.xcor(), x_3_mod * self.square_size) + x_shift * self.square_size,
+                    y_3_op(turt_3.ycor(), y_3_mod * self.square_size) + y_shift * self.square_size)
 
     def is_valid_rotation(self, x, y):
         return not out_of_bounds(x, y) and self.board[y][x] is None
