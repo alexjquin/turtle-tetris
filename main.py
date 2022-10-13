@@ -6,6 +6,18 @@ from piece_manager import PieceManager
 from scoreboard import Scoreboard
 
 
+def march_turtles_off(full_rows):
+    for step in range(0, 10):  # 10 steps to move off board
+        for row in full_rows:
+            for turt in row:
+                turt.forward(SQUARE_SIZE)
+                turt.x_index -= 1
+
+                if turt.x_index < 0:
+                    turt.hideturtle()
+            screen.update()
+
+
 def move_down_on_timer():
     global delay
     global game_is_on
@@ -17,16 +29,25 @@ def move_down_on_timer():
 
         if piece_manager.is_full():
             game_is_on = False
+            return
         else:
-            num_lines = piece_manager.check_lines()
-            scoreboard.add(num_lines)
-            piece_manager.next_piece()
+            num_lines, full_rows = piece_manager.check_lines()
 
-            if scoreboard.lines > 0 and scoreboard.lines % 10:
-                scoreboard.level_up()
-                delay *= 0.9
+            if num_lines > 0:
+                scoreboard.add(num_lines)
 
-    turtle.ontimer(move_down_on_timer, t=delay * 1000)
+                march_turtles_off(full_rows)
+
+                piece_manager.shift_pieces_down(full_rows)
+
+                if scoreboard.lines > 0 and scoreboard.lines % 10 == 0:
+                    scoreboard.level_up()
+                    delay *= 0.9
+
+        piece_manager.next_piece()
+
+    global timer_id
+    timer_id = canvas.after(int(delay * 1000), move_down_on_timer)
 
 
 def swap_piece_event(event=None):
@@ -64,16 +85,13 @@ canvas.bind("<z>", piece_manager.rotate_left)
 
 screen.update()
 
-global game_is_on
 game_is_on = True
 
-global delay
 delay = 1
 
-global swapped
 swapped = False
 
-turtle.ontimer(move_down_on_timer, t=delay * 1000)
+timer_id = canvas.after(int(delay * 1000), move_down_on_timer)
 
 while game_is_on:
     screen.update()
