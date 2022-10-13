@@ -342,58 +342,53 @@ class PieceManager:
         if not self.is_valid_rotation(turt_0_new_x, turt_0_new_y) or \
                 not self.is_valid_rotation(turt_2_new_x, turt_2_new_y) or \
                 not self.is_valid_rotation(turt_3_new_x, turt_3_new_y):
-            # shift up 1
+            # Try hift up 1
             if self.is_valid_rotation(turt_0_new_x, turt_0_new_y + 1) and \
                     self.is_valid_rotation(turt_1_x, turt_1_y + 1) and \
                     self.is_valid_rotation(turt_2_new_x, turt_2_new_y + 1) and \
                     self.is_valid_rotation(turt_3_new_x, turt_3_new_y + 1):
-                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                      turt_2_new_y,
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                       turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                       y_2_op, y_3_mod, y_3_op, 0, 1)
                 return True
 
-            # shift up 2
+            # Try shift up 2
             elif self.is_valid_rotation(turt_0_new_x, turt_0_new_y + 2) and \
                     self.is_valid_rotation(turt_1_x, turt_1_y + 2) and \
                     self.is_valid_rotation(turt_2_new_x, turt_2_new_y + 2) and \
                     self.is_valid_rotation(turt_3_new_x, turt_3_new_y + 2):
-                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                      turt_2_new_y,
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                       turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                       y_2_op, y_3_mod, y_3_op, 0, 2)
                 return True
 
-            # shift right 1
+            # Try shift right 1
             elif self.is_valid_rotation(turt_0_new_x + 1, turt_0_new_y) and \
                     self.is_valid_rotation(turt_1_x + 1, turt_1_y) and \
                     self.is_valid_rotation(turt_2_new_x + 1, turt_2_new_y) and \
                     self.is_valid_rotation(turt_3_new_x + 1, turt_3_new_y):
 
-                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                      turt_2_new_y,
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                       turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                       y_2_op, y_3_mod, y_3_op, 1, 0)
                 return True
 
-            # shift left 1
+            # Try shift left 1
             elif self.is_valid_rotation(turt_0_new_x - 1, turt_0_new_y) and \
                     self.is_valid_rotation(turt_1_x - 1, turt_1_y) and \
                     self.is_valid_rotation(turt_2_new_x - 1, turt_2_new_y) and \
                     self.is_valid_rotation(turt_3_new_x - 1, turt_3_new_y):
-                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                      turt_2_new_y,
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                       turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                       y_2_op, y_3_mod, y_3_op, -1, 0)
                 return True
 
-            # shift down 1
+            # Try shift down 1
             elif self.is_valid_rotation(turt_0_new_x, turt_0_new_y - 1) and \
                     self.is_valid_rotation(turt_1_x, turt_1_y - 1) and \
                     self.is_valid_rotation(turt_2_new_x, turt_2_new_y - 1) and \
                     self.is_valid_rotation(turt_3_new_x, turt_3_new_y - 1):
-                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                      turt_2_new_y,
+                self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                       turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                       y_2_op, y_3_mod, y_3_op, 0, -1)
                 return True
@@ -401,8 +396,7 @@ class PieceManager:
             return False
 
         else:
-            self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x,
-                                  turt_2_new_y,
+            self.shift_and_rotate(turt_0, turt_0_new_x, turt_0_new_y, turt_1, turt_2, turt_2_new_x, turt_2_new_y,
                                   turt_3, turt_3_new_x, turt_3_new_y, x_0_op, x_2_op, x_3_mod, x_3_op, y_0_op,
                                   y_2_op, y_3_mod, y_3_op, 0, 0)
 
