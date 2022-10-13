@@ -13,6 +13,8 @@ class Scoreboard(Turtle):
         self.print_board()
 
     def print_board(self):
+        self.clear()
+
         self.print_hold()
 
         self.print_next()
@@ -66,6 +68,10 @@ class Scoreboard(Turtle):
         self.lines += num_lines
         self.print_lines()
 
+        self.print_board()
+
     def level_up(self):
         self.level += 1
         self.print_level()
+
+        self.print_board()
